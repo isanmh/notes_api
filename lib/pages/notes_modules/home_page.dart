@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:notes_api/models/note_model.dart';
+import 'package:notes_api/services/note_services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -8,6 +10,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Note> notes = [];
+  NoteServices noteServices = NoteServices();
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    final data = await noteServices.getNotes();
+    setState(() {
+      isLoading = false;
+      notes = data;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,18 +51,19 @@ class _HomePageState extends State<HomePage> {
           // refresh data
         },
         child: ListView.builder(
-          itemCount: 3,
+          itemCount: notes.length,
           itemBuilder: (context, index) {
+            final note = notes[index];
             return Card(
               child: ListTile(
                 title: Text(
-                  'Flutter training',
+                  note.title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.deepPurple,
                   ),
                 ),
-                subtitle: Text('Calling notes api'),
+                subtitle: Text(note.content),
                 trailing: IconButton(
                   color: Colors.red,
                   onPressed: () async {
