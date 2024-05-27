@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:notes_api/models/user_model.dart';
+import 'package:notes_api/services/user_services.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -8,7 +10,23 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  bool isLoading = false;
+  bool isLoading = true;
+  List<User> users = []; // data kosong dari model
+  UserServices userServices = UserServices();
+  // show
+  show() async {
+    final data = await userServices.getUser();
+    setState(() {
+      users = data; // replace data kosong dengan data dari model
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    show();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +46,25 @@ class _UserPageState extends State<UserPage> {
                     onRefresh: () async {
                       // refresh data
                     },
-                    child: ListView.builder(
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text('Ihsan Miftahul Huda'),
-                          subtitle: Text('isan@gmail.com'),
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              'https://reqres.in/img/faces/5-image.jpg',
-                            ),
+                    child: isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ListView.builder(
+                            itemCount: users.length,
+                            itemBuilder: (context, index) {
+                              final user = users[index];
+                              return ListTile(
+                                title: Text(user.first_name),
+                                subtitle: Text(user.email),
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    user.avatar,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
                   ),
                 ),
               ],

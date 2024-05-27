@@ -67,9 +67,7 @@ class _PostPageState extends State<PostPage> {
         title: const Text('All News'),
       ),
       body: RefreshIndicator(
-        onRefresh: () async {
-          // refresh data
-        },
+        onRefresh: () async {},
         child: ListView.builder(
           controller: sController,
           padding: const EdgeInsets.all(10),
