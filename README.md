@@ -1,6 +1,6 @@
 # notes_api
 
-A new Flutter project.
+Project Rest API untuk pelatihan Flutter Kemenkeu 20-24 Mei 2024
 
 ## Getting Started
 
