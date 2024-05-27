@@ -64,7 +64,7 @@ class _AddNoteState extends State<AddNote> {
                       });
                       if (validateTitle == false && validateContent == false) {
                         // add notes
-                        print('note added');
+                        // print('note added');
                         showSnackBar(context, 'Note added');
                       }
                     },

@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- permision internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="notes_api"
         android:name="${applicationName}"
