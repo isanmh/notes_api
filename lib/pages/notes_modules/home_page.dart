@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes_api/models/note_model.dart';
 import 'package:notes_api/services/note_services.dart';
+import 'package:notes_api/utils/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -58,12 +59,17 @@ class _HomePageState extends State<HomePage> {
               child: ListTile(
                 title: Text(
                   note.title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.deepPurple,
                   ),
+                  maxLines: 1,
                 ),
-                subtitle: Text(note.content),
+                subtitle: Text(
+                  note.content,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 trailing: IconButton(
                   color: Colors.red,
                   onPressed: () async {
@@ -72,8 +78,8 @@ class _HomePageState extends State<HomePage> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('Delete note'),
-                          content: Text('Are you sure?'),
+                          title: const Text('Delete note'),
+                          content: const Text('Are you sure?'),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -88,7 +94,12 @@ class _HomePageState extends State<HomePage> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                // delete data
+                                await noteServices.deleteNote(
+                                  note.id,
+                                );
+                                getData();
+                                Navigator.pop(context);
+                                showSnackBar(context, 'Note was deleted');
                               },
                               child: const Text(
                                 'Delete',

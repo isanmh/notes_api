@@ -62,7 +62,7 @@ class NoteServices {
   }
 
   // delete
-  Future deleteNote(int id) async {
+  Future deleteNote(String id) async {
     try {
       final res = await http.delete(
         Uri.parse('$notesUrl/${id.toString()}'),

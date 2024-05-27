@@ -57,6 +57,15 @@ class _PostPageState extends State<PostPage> {
     }
   }
 
+  Future<void> refreshData() async {
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      posts.clear();
+      page = 1;
+    });
+    await getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +76,7 @@ class _PostPageState extends State<PostPage> {
         title: const Text('All News'),
       ),
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: refreshData,
         child: ListView.builder(
           controller: sController,
           padding: const EdgeInsets.all(10),
