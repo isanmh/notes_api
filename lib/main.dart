@@ -5,6 +5,7 @@ import 'package:notes_api/pages/notes_modules/add_note.dart';
 import 'package:notes_api/pages/notes_modules/edit_note.dart';
 import 'package:notes_api/pages/notes_modules/home_page.dart';
 import 'package:notes_api/pages/post_page.dart';
+import 'package:notes_api/pages/splash_page.dart';
 import 'package:notes_api/pages/user_page.dart';
 
 void main() {
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const MenuPage(),
+          '/': (context) => const SplashPage(),
+          '/menu': (context) => const MenuPage(),
           '/add': (context) => AddNote(),
           '/edit': (context) => EditNote(),
         },

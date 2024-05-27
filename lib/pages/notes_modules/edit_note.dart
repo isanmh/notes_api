@@ -78,7 +78,7 @@ class _EditNoteState extends State<EditNote> {
                         contentController.text,
                       );
                       if (res) {
-                        Navigator.pushNamed(context, '/');
+                        Navigator.pushNamed(context, '/menu');
                         showSnackBar(context, 'Data updated');
                       }
                     }

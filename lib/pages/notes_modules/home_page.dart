@@ -50,88 +50,93 @@ class _HomePageState extends State<HomePage> {
       body: RefreshIndicator(
         onRefresh: () async {
           // refresh data
+          getData();
         },
-        child: ListView.builder(
-          itemCount: notes.length,
-          itemBuilder: (context, index) {
-            final note = notes[index];
-            return Card(
-              child: ListTile(
-                title: Text(
-                  note.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
-                  ),
-                  maxLines: 1,
-                ),
-                subtitle: Text(
-                  note.content,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                trailing: IconButton(
-                  color: Colors.red,
-                  onPressed: () async {
-                    // alert dialog
-                    await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Delete note'),
-                          content: const Text('Are you sure?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                await noteServices.deleteNote(
-                                  note.id,
-                                );
-                                getData();
-                                Navigator.pop(context);
-                                showSnackBar(context, 'Note was deleted');
-                              },
-                              child: const Text(
-                                'Delete',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  final note = notes[index];
+                  return Card(
+                    child: ListTile(
+                      title: Text(
+                        note.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                        ),
+                        maxLines: 1,
+                      ),
+                      subtitle: Text(
+                        note.content,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: IconButton(
+                        color: Colors.red,
+                        onPressed: () async {
+                          // alert dialog
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Delete note'),
+                                content: const Text('Are you sure?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await noteServices.deleteNote(
+                                        note.id,
+                                      );
+                                      getData();
+                                      Navigator.pop(context);
+                                      showSnackBar(context, 'Note was deleted');
+                                    },
+                                    child: const Text(
+                                      'Delete',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      onTap: () {
+                        // detail edit data & arguments
+                        Navigator.pushNamed(
+                          context,
+                          '/edit',
+                          arguments: [
+                            // arguments data to edit
+                            note.id,
+                            note.title,
+                            note.content,
                           ],
                         );
                       },
-                    );
-                  },
-                  icon: const Icon(Icons.delete),
-                ),
-                onTap: () {
-                  // detail edit data & arguments
-                  Navigator.pushNamed(
-                    context,
-                    '/edit',
-                    arguments: [
-                      // arguments data to edit
-                      note.id,
-                      note.title,
-                      note.content,
-                    ],
+                    ),
                   );
                 },
               ),
-            );
-          },
-        ),
       ),
     );
   }
