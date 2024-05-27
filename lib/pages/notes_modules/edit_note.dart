@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_api/services/note_services.dart';
 import 'package:notes_api/utils/constants.dart';
 
 class EditNote extends StatefulWidget {
@@ -14,6 +15,8 @@ class _EditNoteState extends State<EditNote> {
   // validation
   bool validateTitle = false;
   bool validateContent = false;
+
+  NoteServices noteServices = NoteServices();
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +71,16 @@ class _EditNoteState extends State<EditNote> {
                           : validateContent = false;
                     });
                     if (validateTitle == false && validateContent == false) {
-                      // edit data
-                      showSnackBar(context, 'Data updated');
+                      // edit data notes
+                      final res = await noteServices.putNote(
+                        int.parse(args[0]),
+                        titleController.text,
+                        contentController.text,
+                      );
+                      if (res) {
+                        Navigator.pushNamed(context, '/');
+                        showSnackBar(context, 'Data updated');
+                      }
                     }
                   },
                   child: const Text('Update'),

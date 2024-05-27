@@ -121,9 +121,10 @@ class _HomePageState extends State<HomePage> {
                     context,
                     '/edit',
                     arguments: [
-                      '1',
-                      'Flutter training',
-                      'Calling notes api',
+                      // arguments data to edit
+                      note.id,
+                      note.title,
+                      note.content,
                     ],
                   );
                 },
